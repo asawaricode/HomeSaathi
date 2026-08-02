@@ -98,3 +98,34 @@ body{
 { height: 400px; 
     width: 100%;
 }
+
+/* ── Skeleton Loader ─────────────────────────────────────────────────── */
+@keyframes shimmer {
+    0%   { background-position: -200% 0; }
+    100% { background-position:  200% 0; }
+}
+.shimmer {
+    background: linear-gradient(90deg, #e8e8e8 25%, #f5f5f5 50%, #e8e8e8 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite linear;
+}
+.skeleton-card {
+    border: none;
+    margin: 2rem;
+}
+.skeleton-img {
+    height: 20rem;
+    border-radius: 1rem;
+}
+.skeleton-body {
+    padding: 0.5rem 0;
+}
+.skeleton-line {
+    height: 0.9rem;
+    border-radius: 0.4rem;
+    margin: 0.5rem 0;
+    width: 100%;
+}
+.skeleton-line.short {
+    width: 55%;
+}

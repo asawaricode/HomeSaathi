@@ -75,8 +75,17 @@
         />
         <div class="invalid-feedback">Please enter the location</div>
       </div>
+      <div class="mb-3">
+        <label for="category" class="form-label">Category</label>
+        <select name="listing[category]" class="form-select">
+          <% for(let cat of CATEGORIES) { %>
+            <option value="<%= cat %>" <%= listing.category === cat ? "selected" : "" %>><%= cat %></option>
+          <% } %>
+        </select>
+      </div>
       <br />
       <button class="btn btn-dark edit-btn mt-3">Edit</button>
+
       <br /><br /><br />
     </form>
   </div>
