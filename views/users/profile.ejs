@@ -1,0 +1,98 @@
+﻿<% layout("/layouts/boilerplate") %>
+<body>
+    <style>
+        .profile-header {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #ff385c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        .profile-section {
+            margin-top: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        .profile-section h4 {
+            border-bottom: 2px solid #ff385c;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+        }
+        .empty-section {
+            color: #888;
+            font-size: 0.95rem;
+        }
+    </style>
+
+    <div class="row profile-header">
+        <div class="col-12">
+            <div class="profile-avatar">
+                <%= user.username.charAt(0).toUpperCase() %>
+            </div>
+            <h2 class="mb-1"><%= user.username %></h2>
+            <p class="text-muted mb-0"><i class="fa-regular fa-envelope"></i> <%= user.email %></p>
+        </div>
+    </div>
+
+    <!-- My Listings Section -->
+    <div class="profile-section">
+        <h4><i class="fa-solid fa-house"></i> My Listings</h4>
+        <% if (myListings.length === 0) { %>
+            <p class="empty-section">You have not created any listings yet. <a href="/listings/new">Create one now!</a></p>
+        <% } else { %>
+            <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
+                <% for(let listing of myListings){ %>
+                    <a href="/listings/<%= listing._id %>" class="listing-link">
+                        <div class="card col listing-card">
+                            <img src="<%= listing.image && listing.image.url ? listing.image.url : listing.image %>" class="card-img-top" alt="listing image"
+                                style="height: 18rem;">
+                            <div class="card-img-overlay"></div>
+                            <div class="card-body">
+                                <p class="card-text">
+                                    <b><%= listing.title %></b><br>
+                                    &#8377; <%= listing.price.toLocaleString("en-IN") %> / night
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                <% } %>
+            </div>
+        <% } %>
+    </div>
+
+    <!-- Wishlist Section -->
+    <div class="profile-section">
+        <h4><i class="fa-solid fa-heart" style="color:#ff385c;"></i> My Wishlist</h4>
+        <% if (wishlist.length === 0) { %>
+            <p class="empty-section">No saved listings yet. <a href="/listings">Explore listings</a> and save your favourites!</p>
+        <% } else { %>
+            <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
+                <% for(let listing of wishlist){ %>
+                    <a href="/listings/<%= listing._id %>" class="listing-link">
+                        <div class="card col listing-card">
+                            <img src="<%= listing.image && listing.image.url ? listing.image.url : listing.image %>" class="card-img-top" alt="listing image"
+                                style="height: 18rem;">
+                            <div class="card-img-overlay"></div>
+                            <div class="card-body">
+                                <p class="card-text">
+                                    <b><%= listing.title %></b><br>
+                                    &#8377; <%= listing.price.toLocaleString("en-IN") %> / night
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                <% } %>
+            </div>
+        <% } %>
+    </div>
+</body>

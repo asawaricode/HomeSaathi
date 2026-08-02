@@ -1,0 +1,53 @@
+﻿<% layout("/layouts/boilerplate") %>
+<body>
+    <style>
+        .wishlist-header {
+            margin-top: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        .wishlist-empty {
+            text-align: center;
+            margin-top: 4rem;
+            color: #888;
+        }
+        .wishlist-empty i {
+            font-size: 3rem;
+            color: #ff385c;
+            margin-bottom: 1rem;
+        }
+    </style>
+
+    <div class="row wishlist-header">
+        <div class="col-12">
+            <h2><i class="fa-solid fa-heart" style="color:#ff385c;"></i> My Wishlist</h2>
+            <p class="text-muted">Your saved listings</p>
+        </div>
+    </div>
+
+    <% if (wishlist.length === 0) { %>
+        <div class="wishlist-empty">
+            <div><i class="fa-regular fa-heart"></i></div>
+            <h4>Your wishlist is empty</h4>
+            <p>Start saving listings you love by clicking the <b>Save</b> button on any listing.</p>
+            <a href="/listings" class="btn btn-outline-dark mt-2">Explore listings</a>
+        </div>
+    <% } else { %>
+        <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
+            <% for(let listing of wishlist){ %>
+                <a href="/listings/<%= listing._id %>" class="listing-link">
+                    <div class="card col listing-card">
+                        <img src="<%= listing.image?.url || listing.image %>" class="card-img-top" alt="listing image"
+                            style="height: 20rem;">
+                        <div class="card-img-overlay"></div>
+                        <div class="card-body">
+                            <p class="card-text">
+                                <b><%= listing.title %></b><br>
+                                &#8377; <%= listing.price.toLocaleString("en-IN") %> / night
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            <% } %>
+        </div>
+    <% } %>
+</body>

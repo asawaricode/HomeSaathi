@@ -24,4 +24,9 @@ router
     userController.login)
 
 router.get("/logout", userController.logout);
+
+router.get("/profile", isLoggedIn, wrapAsync(userController.showProfile));
+router.get("/wishlist", isLoggedIn, wrapAsync(userController.showWishlist));
+router.post("/wishlist/:listingId", isLoggedIn, wrapAsync(userController.toggleWishlist));
+
 module.exports = router;

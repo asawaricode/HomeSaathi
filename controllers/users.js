@@ -38,3 +38,32 @@ const {username,email,password} = req.body;
       req.flash("success", "Logged out successfully!");
       res.redirect("/listings");
     }
+
+// Wishlist toggle: add if not present, remove if already in wishlist
+module.exports.toggleWishlist = async (req, res) => {
+    const { listingId } = req.params;
+    const user = await User.findById(req.user._id);
+    const alreadySaved = user.wishlist.includes(listingId);
+    if (alreadySaved) {
+        await User.findByIdAndUpdate(req.user._id, { $pull: { wishlist: listingId } });
+        req.flash("success", "Removed from wishlist.");
+    } else {
+        await User.findByIdAndUpdate(req.user._id, { $addToSet: { wishlist: listingId } });
+        req.flash("success", "Saved to wishlist!");
+    }
+    res.redirect(`/listings/${listingId}`);
+};
+
+// Show wishlist page
+module.exports.showWishlist = async (req, res) => {
+    const user = await User.findById(req.user._id).populate("wishlist");
+    res.render("users/wishlist", { wishlist: user.wishlist });
+};
+
+// Show profile page
+module.exports.showProfile = async (req, res) => {
+    const Listing = require("../models/listing");
+    const user = await User.findById(req.user._id).populate("wishlist");
+    const myListings = await Listing.find({ owner: req.user._id });
+    res.render("users/profile", { user, myListings, wishlist: user.wishlist });
+};

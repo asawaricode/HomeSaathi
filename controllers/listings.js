@@ -4,8 +4,13 @@ const mapToken = process.env.MAP_TOKEN;
 const geocodingClient = mbxGeocoding({ accessToken: mapToken });
 
 module.exports.index = async (req, res) => {
-    const allListings = await Listing.find({});
-    res.render("listings/index", { allListings });
+    let query = {};
+    if (req.query.q && req.query.q.trim() !== "") {
+        const regex = new RegExp(req.query.q.trim(), "i");
+        query = { $or: [{ title: regex }, { location: regex }, { country: regex }] };
+    }
+    const allListings = await Listing.find(query);
+    res.render("listings/index", { allListings, searchQuery: req.query.q || "" });
   };
   module.exports.renderNewForm =(req, res) => {
   res.render("listings/new.ejs");
@@ -18,7 +23,14 @@ module.exports.showListing = async (req, res) => {
       return res.redirect("/listings");
     }
     console.log(listing);
-    res.render("listings/show.ejs", { listing });
+    // Fetch current user's wishlist so the Save button shows correct state
+    let wishlistIds = [];
+    if (req.user) {
+        const User = require("../models/user");
+        const currentUser = await User.findById(req.user._id).select("wishlist");
+        wishlistIds = currentUser.wishlist.map(id => id.toString());
+    }
+    res.render("listings/show.ejs", { listing, wishlistIds });
   } 
 
 module.exports.createListing = async (req, res, next) => {

@@ -29,6 +29,15 @@
                 <p class="card-text">
                     <%= listing.country %>
                 </p>
+                <% if(currUser) { %>
+                <form method="POST" action="/user/wishlist/<%= listing._id %>">
+                    <% const isWishlisted = wishlistIds && wishlistIds.includes(listing._id.toString()); %>
+                    <button type="submit" class="btn btn-outline-danger btn-sm mt-1" title="<%= isWishlisted ? 'Remove from wishlist' : 'Save to wishlist' %>">
+                        <i class="<%= isWishlisted ? 'fa-solid' : 'fa-regular' %> fa-heart"></i>
+                        <%= isWishlisted ? 'Saved' : 'Save' %>
+                    </button>
+                </form>
+                <% } %>
                 </p>
             </div>
         </div>
